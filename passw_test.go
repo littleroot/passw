@@ -23,11 +23,8 @@ func TestGenerate(t *testing.T) {
 			for j := 0; j < len(out); j++ {
 				if j == 3 || j == 7 || j == 11 {
 					Equal(t, byte('-'), out[j], "invalid byte %v at index [%d]", out[j], j)
-				} else {
-					_, ok := charsSet[out[j]]
-					if !ok {
-						t.Errorf("invalid byte %v at index [%d]", out[j], j)
-					}
+				} else if _, ok := charsSet[out[j]]; !ok {
+					t.Errorf("invalid byte %v at index [%d]", out[j], j)
 				}
 			}
 		})
