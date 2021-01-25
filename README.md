@@ -1,14 +1,14 @@
 A command line password generator.
 
 ```
-% newpassw
+% passwgen
 D8f-UYH-pK8-tQ3
 ```
 
 Install:
 
 ```
-go get github.com/littleroot/passw/cmd/newpassw
+go get github.com/littleroot/passw/cmd/passwgen
 ```
 
 Test:
