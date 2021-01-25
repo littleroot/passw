@@ -1,3 +1,4 @@
+// Package passw provides a password generator using crypto/rand.
 package passw
 
 import (
@@ -6,20 +7,22 @@ import (
 	"strings"
 )
 
+// the following characters are skipped since they are sometimes difficult to
+// distinguish from each other: 0, 1, I, O, i, l, o
 var chars = [...]byte{
-	'0', '1', '2', '3', '4',
+	'2', '3', '4',
 	'5', '6', '7', '8', '9',
 
 	'A', 'B', 'C', 'D', 'E',
-	'F', 'G', 'H', 'I', 'J',
-	'K', 'L', 'M', 'N', 'O',
+	'F', 'G', 'H', 'J',
+	'K', 'L', 'M', 'N',
 	'P', 'Q', 'R', 'S', 'T',
 	'U', 'V', 'W', 'X', 'Y',
 	'Z',
 
 	'a', 'b', 'c', 'd', 'e',
-	'f', 'g', 'h', 'i', 'j',
-	'k', 'l', 'm', 'n', 'o',
+	'f', 'g', 'h', 'j',
+	'k', 'm', 'n',
 	'p', 'q', 'r', 's', 't',
 	'u', 'v', 'w', 'x', 'y',
 	'z',
@@ -33,6 +36,7 @@ const (
 	partSeparator = '-'
 )
 
+// Generate generates a new password.
 func Generate() (string, error) {
 	var buf strings.Builder
 
