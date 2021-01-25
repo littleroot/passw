@@ -1,7 +1,7 @@
 A command line password generator.
 
 ```
-% passwgen
+% newpassw
 D8f-UYH-pK8-tQ3
 ```
 
@@ -11,7 +11,7 @@ letter, and one hyphen.
 ### Install
 
 ```
-go get github.com/littleroot/passw/cmd/passwgen
+go get github.com/littleroot/passw/cmd/newpassw
 ```
 
 ### Test
