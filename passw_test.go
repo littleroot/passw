@@ -20,12 +20,29 @@ func TestGenerate(t *testing.T) {
 			}
 			Equal(t, 15, len(out), "incorrect output length") // (4 * 3) + 3
 
+			var foundUpper, foundLower bool
+
 			for j := 0; j < len(out); j++ {
 				if j == 3 || j == 7 || j == 11 {
+					// separator
 					Equal(t, byte('-'), out[j], "invalid byte %v at index [%d]", out[j], j)
 				} else if _, ok := charsSet[out[j]]; !ok {
+					// other characters should be in the expected character set
 					t.Errorf("invalid byte %v at index [%d]", out[j], j)
 				}
+
+				if _, ok := upperSet[out[j]]; ok {
+					foundUpper = true
+				} else if _, ok := lowerSet[out[j]]; ok {
+					foundLower = true
+				}
+			}
+
+			if !foundUpper {
+				t.Errorf("expected at least one uppercase character")
+			}
+			if !foundLower {
+				t.Errorf("expected at least one lowercase character")
 			}
 		})
 	}

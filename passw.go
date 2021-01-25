@@ -30,6 +30,41 @@ var chars = [...]byte{
 
 var charsLen = big.NewInt(int64(len(chars)))
 
+var upper = [...]byte{
+	'A', 'B', 'C', 'D', 'E',
+	'F', 'G', 'H', 'J',
+	'K', 'L', 'M', 'N',
+	'P', 'Q', 'R', 'S', 'T',
+	'U', 'V', 'W', 'X', 'Y',
+	'Z',
+}
+
+var lower = [...]byte{
+	'a', 'b', 'c', 'd', 'e',
+	'f', 'g', 'h', 'j',
+	'k', 'm', 'n',
+	'p', 'q', 'r', 's', 't',
+	'u', 'v', 'w', 'x', 'y',
+	'z',
+}
+
+var (
+	upperSet map[byte]struct{}
+	lowerSet map[byte]struct{}
+)
+
+func init() {
+	upperSet = make(map[byte]struct{})
+	lowerSet = make(map[byte]struct{})
+
+	for _, b := range upper {
+		upperSet[b] = struct{}{}
+	}
+	for _, b := range lower {
+		lowerSet[b] = struct{}{}
+	}
+}
+
 const (
 	numParts      = 4
 	partLen       = 3
@@ -39,6 +74,7 @@ const (
 // Generate generates a new password.
 func Generate() (string, error) {
 	var buf strings.Builder
+	var hasUpper, hasLower bool
 
 	for i := 0; i < numParts; i++ {
 		part, err := generatePart()
@@ -50,9 +86,21 @@ func Generate() (string, error) {
 		if i != numParts-1 {
 			buf.WriteByte(partSeparator)
 		}
+
+		for _, b := range part {
+			if _, ok := upperSet[b]; ok {
+				hasUpper = true
+			} else if _, ok := lowerSet[b]; ok {
+				hasLower = true
+			}
+		}
 	}
 
-	return buf.String(), nil
+	if hasUpper && hasLower {
+		return buf.String(), nil
+	}
+
+	return Generate()
 }
 
 func generatePart() ([]byte, error) {
