@@ -20,7 +20,7 @@ func TestGenerate(t *testing.T) {
 			}
 			Equal(t, 15, len(out), "incorrect output length") // (4 * 3) + 3
 
-			var foundUpper, foundLower bool
+			var foundUpper, foundLower, foundNumber bool
 
 			for j := 0; j < len(out); j++ {
 				if j == 3 || j == 7 || j == 11 {
@@ -35,14 +35,19 @@ func TestGenerate(t *testing.T) {
 					foundUpper = true
 				} else if _, ok := lowerSet[out[j]]; ok {
 					foundLower = true
+				} else if _, ok := numbersSet[out[j]]; ok {
+					foundNumber = true
 				}
 			}
 
 			if !foundUpper {
-				t.Errorf("expected at least one uppercase character")
+				t.Errorf("expected at least one uppercase letter")
 			}
 			if !foundLower {
-				t.Errorf("expected at least one lowercase character")
+				t.Errorf("expected at least one lowercase letter")
+			}
+			if !foundNumber {
+				t.Errorf("expected at least one number")
 			}
 		})
 	}

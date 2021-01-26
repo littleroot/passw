@@ -48,20 +48,30 @@ var lower = [...]byte{
 	'z',
 }
 
+var numbers = [...]byte{
+	'2', '3', '4',
+	'5', '6', '7', '8', '9',
+}
+
 var (
-	upperSet map[byte]struct{}
-	lowerSet map[byte]struct{}
+	upperSet   map[byte]struct{}
+	lowerSet   map[byte]struct{}
+	numbersSet map[byte]struct{}
 )
 
 func init() {
 	upperSet = make(map[byte]struct{})
 	lowerSet = make(map[byte]struct{})
+	numbersSet = make(map[byte]struct{})
 
 	for _, b := range upper {
 		upperSet[b] = struct{}{}
 	}
 	for _, b := range lower {
 		lowerSet[b] = struct{}{}
+	}
+	for _, b := range numbers {
+		numbersSet[b] = struct{}{}
 	}
 }
 
@@ -74,7 +84,7 @@ const (
 // Generate generates a new password.
 func Generate() (string, error) {
 	var buf strings.Builder
-	var hasUpper, hasLower bool
+	var hasUpper, hasLower, hasNumber bool
 
 	for i := 0; i < numParts; i++ {
 		part, err := generatePart()
@@ -92,11 +102,13 @@ func Generate() (string, error) {
 				hasUpper = true
 			} else if _, ok := lowerSet[b]; ok {
 				hasLower = true
+			} else if _, ok := numbersSet[b]; ok {
+				hasNumber = true
 			}
 		}
 	}
 
-	if hasUpper && hasLower {
+	if hasUpper && hasLower && hasNumber {
 		return buf.String(), nil
 	}
 
